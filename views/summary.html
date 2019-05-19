@@ -32,6 +32,14 @@
         outdoor interests:
         <repeat group="{{ @outdoor }}" value="{{ @each }}">
             <li>{{ @each }}</li>
+        </repeat><br>
+
+        all interests:
+        <repeat group="{{ @indoor }}" value="{{ @each }}">
+            {{ @each }}
+        </repeat>
+        <repeat group="{{ @outdoor }}" value="{{ @each }}">
+            {{ @each }}
         </repeat>
 
     </body>
