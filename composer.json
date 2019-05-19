@@ -1,0 +1,12 @@
+{
+  "name": "bzhang/328/my-dating",
+  "authors": [
+    {
+      "name": "Bo Zhang",
+      "email": "bzhang3@mail.greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
