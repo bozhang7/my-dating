@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Interests</title>
+    </head>
+
+    <body>
+        <h1>Interests</h1>
+
+        <form method="post" action="summary">
+            <label>In-door Interests
+                <input type="checkbox" name="indoor-interests[]" value="tv">tv
+                <input type="checkbox" name="indoor-interests[]" value="movies">movies
+                <input type="checkbox" name="indoor-interests[]" value="cooking">cooking
+                <input type="checkbox" name="indoor-interests[]" value="board-games">board games
+                <input type="checkbox" name="indoor-interests[]" value="puzzles">puzzles
+                <input type="checkbox" name="indoor-interests[]" value="reading">reading
+                <input type="checkbox" name="indoor-interests[]" value="playing cards">playing cards
+                <input type="checkbox" name="indoor-interests[]" value="video games">video games
+            </label><br>
+
+            <label>Out-door Interests
+                <input type="checkbox" name="outdoor-interests[]" value="hiking">hiking
+                <input type="checkbox" name="outdoor-interests[]" value="biking">biking
+                <input type="checkbox" name="outdoor-interests[]" value="swimming">swimming
+                <input type="checkbox" name="outdoor-interests[]" value="collecting">collecting
+                <input type="checkbox" name="outdoor-interests[]" value="walking">walking
+                <input type="checkbox" name="outdoor-interests[]" value="climbing">climbing
+            </label><br>
+
+            <input type="submit" value="Next">
+        </form><br>
+
+        first name: {{ $_SESSION['fname'] }} <br>
+        last name: {{ $_SESSION['lname'] }} <br>
+        age: {{ $_SESSION['age'] }} <br>
+        gender: {{ $_SESSION['gender'] }} <br>
+        phone: {{ $_SESSION['phone'] }} <br><br>
+
+        email: {{ $_SESSION['email'] }} <br>
+        state: {{ $_SESSION['state'] }} <br>
+        seeking: {{ $_SESSION['seeking-gender'] }} <br>
+        bio: {{ $_SESSION['bio'] }} <br>
+    </body>
+</html>
+
+
