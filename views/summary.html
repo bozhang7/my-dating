@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Profile</title>
+    </head>
+
+    <body>
+        <h1>Summary</h1>
+
+        <!-- user info goes here... -->
+
+
+        <a href="">Contact Me!</a><br><br>
+
+        first name: {{ $_SESSION['fname'] }} <br>
+        last name: {{ $_SESSION['lname'] }} <br>
+        age: {{ $_SESSION['age'] }} <br>
+        gender: {{ $_SESSION['gender'] }} <br>
+        phone: {{ $_SESSION['phone'] }} <br><br>
+
+        email: {{ $_SESSION['email'] }} <br>
+        state: {{ $_SESSION['state'] }} <br>
+        seeking: {{ $_SESSION['seeking-gender'] }} <br>
+        bio: {{ $_SESSION['bio'] }} <br><br>
+
+        indoor interests:
+        <repeat group="{{ @indoor }}" value="{{ @each }}">
+            <li>{{ @each }}</li>
+        </repeat><br>
+
+        outdoor interests:
+        <repeat group="{{ @outdoor }}" value="{{ @each }}">
+            <li>{{ @each }}</li>
+        </repeat>
+
+    </body>
+</html>
