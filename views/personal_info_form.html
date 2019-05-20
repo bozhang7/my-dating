@@ -3,32 +3,59 @@
     <head>
         <meta charset="UTF-8">
         <title>Personal Info</title>
+        <style>
+            .err {
+                color: red;
+            }
+        </style>
     </head>
 
     <body>
         <h1>Personal Information</h1>
 
-        <form method="post" action="profile_form">
+        <form method="post" action="#">
+            <!-- required -->
             <label>First Name
-                <input type="text" name="fname">
-            </label><br>
+                <input type="text" name="fname" value="{{ @fname }}">
+            </label>
+            <check if="{{ @errors['fname'] }}">
+                <span class="err">{{ @errors['fname'] }}</span>
+            </check><br>
 
+            <!-- required -->
             <label>Last Name
-                <input type="text" name="lname">
-            </label><br>
+                <input type="text" name="lname" value="{{ @lname }}">
+            </label>
+            <check if="{{ @errors['lname'] }}">
+                <span class="err">{{ @errors['lname'] }}</span>
+            </check><br>
 
+            <!-- required -->
             <label>Age
-                <input type="text" name="age">
-            </label><br>
+                <input type="text" name="age" value="{{ @age }}">
+            </label>
+            <check if="{{ @errors['age'] }}">
+                <span class="err">{{ @errors['age'] }}</span>
+            </check><br>
 
-            <label>Gender
-                <input type="radio" name="gender" value="male">Male
-                <input type="radio" name="gender" value="female">Female
-            </label><br>
+            <!-- optional -->
+            Gender
+            <repeat group="{{ @genders }}" value="{{ @genderOption }}">
+                <label><input type="radio" name="gender" value="{{ @genderOption }}"
+                    <check if="{{ @genderOption == @genderChoice }}">
+                        checked = "checked"
+                    </check>
+                    >{{ @genderOption }}
+                </label>
+            </repeat><br>
 
+            <!-- required -->
             <label>Phone Number
-                <input type="text" name="phone">
-            </label><br>
+                <input type="text" name="phone" placeholder="xxx-xxx-xxxx" value="{{ @phone }}">
+            </label>
+            <check if="{{ @errors['phone'] }}">
+                <span class="err">{{ @errors['phone'] }}</span>
+            </check><br>
 
             <input type="submit" value="Next">
         </form>
