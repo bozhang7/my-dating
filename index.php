@@ -8,6 +8,7 @@
 
     // requires autoload file
     require_once('vendor/autoload.php');
+    require_once('model/validate.php');
 
     // instantiates f3
     $f3 = Base::instance();
@@ -25,13 +26,46 @@
     });
 
     // defines "Personal Information" route
-    $f3->route('GET /personal_info_form', function() {
+    $f3->route('GET|POST /personal_info_form', function($f3) {
+        // defines an array of gender with available options
+        $f3->set('genders', array('Male', 'Female'));
+
+        // if the form has been submitted (via POST), validates it
+        if (!empty($_POST)) {
+            // gets all the data from the form
+            $fname = $_POST['fname'];
+            $lname = $_POST['lname'];
+            $age = $_POST['age'];
+            $genderChoice = $_POST['gender']; echo "gender: $genderChoice<br>";
+            $phone = $_POST['phone'];
+
+            // stores all the data to hive
+            $f3->set('fname', $fname);
+            $f3->set('lname', $lname);
+            $f3->set('age', $age);
+            $f3->set('genderChoice', $genderChoice);
+            $f3->set('phone', $phone);
+
+            if (validatePersonalInfoForm()) {
+                echo "all personal info fields are valid!";
+                // writes data to session variables
+                $_SESSION['fname'] = $fname;
+                $_SESSION['lname'] = $lname;
+                $_SESSION['age'] = $age;
+                $_SESSION['gender'] = $genderChoice;
+                $_SESSION['phone'] = $phone;
+
+                // redirects to next form: Profile Form
+                $f3->reroute('/profile_form');
+            }
+        }
+
         $view = new Template();
         echo $view->render('views/personal_info_form.html');
     });
 
     // defines "Profile" route
-    $f3->route('POST /profile_form', function() {
+    $f3->route('GET|POST /profile_form', function() {
         $_SESSION['fname'] = $_POST['fname'];
         $_SESSION['lname'] = $_POST['lname'];
         $_SESSION['age'] = $_POST['age'];
@@ -43,7 +77,7 @@
     });
 
     // defines "Interests" route
-    $f3->route('POST /interests_form', function() {
+    $f3->route('GET|POST /interests_form', function() {
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['state'] = $_POST['state'];
         $_SESSION['seeking-gender'] = $_POST['seeking-gender'];
@@ -54,7 +88,7 @@
     });
 
     // defines "Summary" route
-    $f3->route('POST /summary', function($f3) {
+    $f3->route('GET /summary', function($f3) {
         /*
         foreach($_POST['indoor-interests'] as $checked) {
             echo "in door selected: $checked<br>";
