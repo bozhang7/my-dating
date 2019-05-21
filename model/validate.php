@@ -1,5 +1,4 @@
 <?php
-
     function validatePersonalInfoForm() {
         global $f3;
         $isValid = true;
@@ -21,6 +20,8 @@
             $isValid = false;
             $f3->set("errors['age']", "Please re-enter age");
         }
+
+        // todo: validate gender?
 
         // checks phone number
         if (!validatePhone($f3->get('phone'))) {
@@ -55,6 +56,22 @@
         return preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $phone);
     }
 
+    function validateProfileForm() {
+        global $f3;
+        $isValid = true;
+
+        if (!validateEmail($f3->get('email'))) {
+            $isValid = false;
+            $f3->set("errors['email']", "Please re-enter email");
+        }
+
+        // todo: validate state?
+        // todo: validate seeking?
+        // todo: validate bio?
+
+        return $isValid;
+    }
+
     /*
      * Checks if an email is valid
      * @return true|false
@@ -63,11 +80,29 @@
         return filter_var($email, FILTER_VALIDATE_EMAIL);
     }
 
+    function validateState($states) {
+
+    }
+
+    function validateSeeking() {
+
+    }
+
+    function validateBio() {
+
+    }
+
+    function validateInterestsForm() {
+        global $f3;
+        $isValid = true;
+
+        return $isValid;
+    }
+
     /*
      * Checks each selected indoor interest against a list of valid options
      */
     function validateIndoor($indoor) {
-
     }
 
     /*
