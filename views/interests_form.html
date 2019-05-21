@@ -8,8 +8,10 @@
     <body>
         <h1>Interests</h1>
 
-        <form method="post" action="summary">
-            <label>In-door Interests <!-- optional -->
+        <form method="post" action="#">
+            <!-- optional -->
+            <p>In-door Interests<br>
+                <!--
                 <input type="checkbox" name="indoor-interests[]" value="tv">tv
                 <input type="checkbox" name="indoor-interests[]" value="movies">movies
                 <input type="checkbox" name="indoor-interests[]" value="cooking">cooking
@@ -18,20 +20,41 @@
                 <input type="checkbox" name="indoor-interests[]" value="reading">reading
                 <input type="checkbox" name="indoor-interests[]" value="playing cards">playing cards
                 <input type="checkbox" name="indoor-interests[]" value="video games">video games
-            </label><br>
+                -->
+                <repeat group="{{ @indoorOptions }}" value="{{ @option }}">
+                    <label><input type="checkbox" name="indoor[]" value="{{ @option }}"
+                        <check if="{{ !empty(@indoorInterests) && in_array(@option, @indoorInterests) }}">
+                            checked = "checked"
+                        </check>
+                        >{{ @option }}
+                    </label>
+                </repeat>
+            </p>
 
-            <label>Out-door Interests <!-- optional -->
+            <!-- optional -->
+            <p>Out-door Interests<br>
+                <!--
                 <input type="checkbox" name="outdoor-interests[]" value="hiking">hiking
                 <input type="checkbox" name="outdoor-interests[]" value="biking">biking
                 <input type="checkbox" name="outdoor-interests[]" value="swimming">swimming
                 <input type="checkbox" name="outdoor-interests[]" value="collecting">collecting
                 <input type="checkbox" name="outdoor-interests[]" value="walking">walking
                 <input type="checkbox" name="outdoor-interests[]" value="climbing">climbing
-            </label><br>
+                -->
+                <repeat group="{{ @outdoorOptions }}" value="{{ @option }}">
+                    <label><input type="checkbox" name="outdoor[]" value="{{ @option }}"
+                        <check if="{{ !empty(@outdoorInterests) && in_array(@option, @outdoorInterests) }}">
+                            checked = "checked"
+                        </check>
+                        >{{ @option }}
+                    </label>
+                </repeat>
+            </p>
 
-            <input type="submit" value="Next">
+            <input type="submit" name="submit" value="Next">
         </form><br>
 
+        <!-- for checking purpose -->
         first name: {{ $_SESSION['fname'] }} <br>
         last name: {{ $_SESSION['lname'] }} <br>
         age: {{ $_SESSION['age'] }} <br>
@@ -40,7 +63,7 @@
 
         email: {{ $_SESSION['email'] }} <br>
         state: {{ $_SESSION['state'] }} <br>
-        seeking: {{ $_SESSION['seeking-gender'] }} <br>
+        seeking: {{ $_SESSION['seeking'] }} <br>
         bio: {{ $_SESSION['bio'] }} <br>
     </body>
 </html>
