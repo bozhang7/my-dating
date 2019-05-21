@@ -12,6 +12,8 @@
 
     <body>
         <h1>Personal Information</h1>
+        <p>Note: ALl information entered is protected by our privacy policy. Profile
+            information can only be viewed by others with your permission.</p>
 
         <form method="post" action="#">
             <!-- required -->
@@ -40,12 +42,12 @@
 
             <!-- optional -->
             Gender
-            <repeat group="{{ @genders }}" value="{{ @genderOption }}">
-                <label><input type="radio" name="gender" value="{{ @genderOption }}"
-                    <check if="{{ @genderOption == @genderChoice }}">
+            <repeat group="{{ @genders }}" value="{{ @option }}">
+                <label><input type="radio" name="gender" value="{{ @option }}"
+                    <check if="{{ @option == @gender }}">
                         checked = "checked"
                     </check>
-                    >{{ @genderOption }}
+                    >{{ @option }}
                 </label>
             </repeat><br>
 
