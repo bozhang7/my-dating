@@ -13,11 +13,11 @@
 
         function __construct($fname, $lname, $age, $gender, $phone)
         {
-            $_fname = $fname;
-            $_lname = $lname;
-            $_age = $age;
-            $_gender = $gender;
-            $_phone = $phone;
+            $this->_fname = $fname;
+            $this->_lname = $lname;
+            $this->_age = $age;
+            $this->_gender = $gender;
+            $this->_phone = $phone;
         }
 
         function setFirstName($fname)
@@ -97,7 +97,7 @@
 
         function getSeeking()
         {
-            return $this->seeking;
+            return $this->_seeking;
         }
 
         function setBio($bio)
@@ -107,6 +107,6 @@
 
         function getBio()
         {
-            return $this->bio;
+            return $this->_bio;
         }
     }
