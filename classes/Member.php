@@ -11,10 +11,10 @@
         private $_seeking;
         private $_bio;
 
-        function __construct($fname, $lname, $age, $gender, $phone)
+        function __construct($fName, $lName, $age, $gender, $phone)
         {
-            $this->_fName = $fname;
-            $this->_lName = $lname;
+            $this->_fName = $fName;
+            $this->_lName = $lName;
             $this->_age = $age;
             $this->_gender = $gender;
             $this->_phone = $phone;
