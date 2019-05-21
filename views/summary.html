@@ -21,19 +21,13 @@
 
         email: {{ $_SESSION['email'] }} <br>
         state: {{ $_SESSION['state'] }} <br>
-        seeking: {{ $_SESSION['seeking-gender'] }} <br>
+        seeking: {{ $_SESSION['seekingChoice'] }} <br>
         bio: {{ $_SESSION['bio'] }} <br><br>
 
-        indoor interests:
-        <repeat group="{{ @indoor }}" value="{{ @each }}">
-            <li>{{ @each }}</li>
-        </repeat><br>
+        indoor interests: {{ $_SESSION['indoorInterests'] }} <br>
+        outdoor interests: {{ $_SESSION['outdoorInterests'] }} <br>
 
-        outdoor interests:
-        <repeat group="{{ @outdoor }}" value="{{ @each }}">
-            <li>{{ @each }}</li>
-        </repeat><br>
-
+        <!--
         all interests:
         <repeat group="{{ @indoor }}" value="{{ @each }}">
             {{ @each }}
@@ -41,6 +35,6 @@
         <repeat group="{{ @outdoor }}" value="{{ @each }}">
             {{ @each }}
         </repeat>
-
+        -->
     </body>
 </html>
