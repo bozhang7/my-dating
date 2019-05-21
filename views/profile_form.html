@@ -3,32 +3,62 @@
     <head>
         <meta charset="UTF-8">
         <title>Profile</title>
+        <style>
+            .err {
+                color: red;
+            }
+        </style>
     </head>
 
     <body>
         <h1>Profile</h1>
 
         <form method="post" action="#">
-            <label>Email <!-- required -->
-                <input type="email" name="email">
-            </label><br>
+            <!-- required -->
+            <label>Email
+                <input type="text" name="email" value="{{ @email }}">
+            </label>
+            <check if="{{ @errors['email'] }}">
+                <span class="err">{{ @errors['email'] }}</span>
+            </check><br>
 
-            <label>State <!-- optional -->
-                <input type="text" name="state">
-            </label><br>
+            <!-- optional -->
+            <label>State
+                <!-- <input type="text" name="state" value="{{ @state }}"> -->
+                <select name="state">
+                    <repeat group="{{ @stateOptions }}" value="{{ @option }}">
+                        <option value="{{ @option }}"
+                            <check if="{{ @option == @state }}">
+                                selected = "selected"
+                            </check>
+                        >{{ @option }}</option>
+                    </repeat>
+                </select>
+            </label>
+            <check if="{{ @errors['state'] }}">
+                <span class="err">{{ @errors['state'] }}</span>
+            </check><br>
 
-            <label>Seeking <!-- optional -->
-                <input type="radio" name="seeking-gender" value="male">Male
-                <input type="radio" name="seeking-gender" value="female">Female
-            </label><br>
+            <!-- optional -->
+            Seeking
+            <repeat group="{{ @seekingOptions }}" value="{{ @option }}">
+                <label><input type="radio" name="seeking" value="{{ @option }}"
+                    <check if="{{ @option == @seeking }}">
+                        checked = "checked"
+                    </check>
+                    >{{ @option }}
+                </label>
+            </repeat><br>
 
-            <label>Biography <!-- optional -->
-                <textarea name="bio"></textarea><br>
+            <!-- optional -->
+            <label>Biography
+                <textarea name="bio">{{ @bio }}</textarea><br>
             </label>
 
             <input type="submit" value="Next">
         </form><br>
 
+        <!-- for checking purpose -->
         first name: {{ $_SESSION['fname'] }} <br>
         last name: {{ $_SESSION['lname'] }} <br>
         age: {{ $_SESSION['age'] }} <br>
