@@ -1,8 +1,8 @@
 <?php
     class Member
     {
-        private $_fname;
-        private $_lname;
+        private $_fName;
+        private $_lName;
         private $_age;
         private $_gender;
         private $_phone;
@@ -13,8 +13,8 @@
 
         function __construct($fname, $lname, $age, $gender, $phone)
         {
-            $this->_fname = $fname;
-            $this->_lname = $lname;
+            $this->_fName = $fname;
+            $this->_lName = $lname;
             $this->_age = $age;
             $this->_gender = $gender;
             $this->_phone = $phone;
@@ -22,22 +22,22 @@
 
         function setFirstName($fname)
         {
-            $this->_fname = $fname;
+            $this->_fName = $fname;
         }
 
         function getFirstName()
         {
-            return $this->_fname;
+            return $this->_fName;
         }
 
         function setLastName($lname)
         {
-            $this->_lname = $lname;
+            $this->_lName = $lname;
         }
 
         function getLastName()
         {
-            return $this->_lname;
+            return $this->_lName;
         }
 
         function setAge($age)
