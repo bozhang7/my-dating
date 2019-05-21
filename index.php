@@ -36,23 +36,28 @@
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
             $age = $_POST['age'];
-            $genderChoice = $_POST['gender']; echo "gender: $genderChoice<br>";
+            $gender = $_POST['gender'];
             $phone = $_POST['phone'];
+
+            echo "fist name: $fname<br>";
+            echo "last name: $lname<br>";
+            echo "age: $age<br>";
+            echo "gender: $gender<br>";
+            echo "phone: $phone<br>";
 
             // stores all the data to hive
             $f3->set('fname', $fname);
             $f3->set('lname', $lname);
             $f3->set('age', $age);
-            $f3->set('genderChoice', $genderChoice);
+            $f3->set('gender', $gender);
             $f3->set('phone', $phone);
 
             if (validatePersonalInfoForm()) {
-                echo "all personal info fields are valid!";
                 // writes data to session variables
                 $_SESSION['fname'] = $fname;
                 $_SESSION['lname'] = $lname;
                 $_SESSION['age'] = $age;
-                $_SESSION['gender'] = $genderChoice;
+                $_SESSION['gender'] = $gender;
                 $_SESSION['phone'] = $phone;
 
                 // redirects to next form: Profile Form
@@ -65,23 +70,73 @@
     });
 
     // defines "Profile" route
-    $f3->route('GET|POST /profile_form', function() {
-        $_SESSION['fname'] = $_POST['fname'];
-        $_SESSION['lname'] = $_POST['lname'];
-        $_SESSION['age'] = $_POST['age'];
-        $_SESSION['gender'] = $_POST['gender'];
-        $_SESSION['phone'] = $_POST['phone'];
+    $f3->route('GET|POST /profile_form', function($f3) {
+        $f3->set('stateOptions', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+            'Idaho', 'Illinois', 'Indiana', 'Lowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
+            'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon',
+            'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
+            'Wisconsin', 'Wyoming'));
+
+        $f3->set('seekingOptions', array('Male', 'Female'));
+
+        if (!empty($_POST)) {
+            $email = $_POST['email'];
+            $state = $_POST['state'];
+            $seeking = $_POST['seeking'];
+            $bio = $_POST['bio'];
+
+            echo "email: $email<br>";
+            echo "state: $state<br>";
+            echo "seeking: $seeking<br>";
+            echo "bio: $bio<br>";
+
+            $f3->set('email', $email);
+            $f3->set('state', $state);
+            $f3->set('seeking', $seeking);
+            $f3->set('bio', $bio);
+
+            if (validateProfileForm()) {
+                $_SESSION['email'] = $email;
+                $_SESSION['state'] = $state;
+                $_SESSION['seeking'] = $seeking;
+                $_SESSION['bio'] = $bio;
+
+                $f3->reroute('/interests_form');
+            }
+        }
 
         $view = new Template();
         echo $view->render('views/profile_form.html');
     });
 
     // defines "Interests" route
-    $f3->route('GET|POST /interests_form', function() {
-        $_SESSION['email'] = $_POST['email'];
-        $_SESSION['state'] = $_POST['state'];
-        $_SESSION['seeking-gender'] = $_POST['seeking-gender'];
-        $_SESSION['bio'] = $_POST['bio'];
+    $f3->route('GET|POST /interests_form', function($f3) {
+        $f3->set('indoorOptions', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
+        $f3->set('outdoorOptions', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
+
+        if ((isset($_POST['submit']))) {
+            $indoorInterests = $_POST['indoor'];
+            $outdoorInterests = $_POST['outdoor'];
+
+            $f3->set('indoorInterests', $indoorInterests);
+            $f3->set('outdoorInterests', $outdoorInterests);
+
+            if (validateInterestsForm()) {
+                if (!empty($indoorInterests)) {
+                    $_SESSION['indoorInterests'] = implode(', ', $indoorInterests);
+                } else {
+                    $_SESSION['indoorInterests'] = "(No indoor interests selected)";
+                }
+
+                if (!empty($outdoorInterests)) {
+                    $_SESSION['outdoorInterests'] = implode(', ', $outdoorInterests);
+                } else {
+                    $_SESSION['outdoorInterests'] = "(No outdoor interests selected)";
+                }
+
+                $f3->reroute('/summary');
+            }
+        }
 
         $view = new Template();
         echo $view->render('views/interests_form.html');
