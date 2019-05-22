@@ -1,7 +1,4 @@
 <?php
-    // starts a session
-    session_start();
-
     // turns on error reporting
     ini_set('display_errors', 1);
     error_reporting(E_ALL);
@@ -9,6 +6,9 @@
     // requires autoload file
     require_once('vendor/autoload.php');
     require_once('model/validate.php');
+
+    // starts a session
+    session_start();
 
     // instantiates f3
     $f3 = Base::instance();
@@ -38,12 +38,14 @@
             $age = $_POST['age'];
             $gender = $_POST['gender'];
             $phone = $_POST['phone'];
+            $premium = $_POST['premium'];
 
             echo "fist name: $fname<br>";
             echo "last name: $lname<br>";
             echo "age: $age<br>";
             echo "gender: $gender<br>";
             echo "phone: $phone<br>";
+            echo "premium: $premium<br>";
 
             // stores all the data to hive
             $f3->set('fname', $fname);
@@ -51,14 +53,40 @@
             $f3->set('age', $age);
             $f3->set('gender', $gender);
             $f3->set('phone', $phone);
+            $f3->set('premium', $premium);
 
-            if (validatePersonalInfoForm()) {
+            // creates the appropriate class object
+            if ($premium == 'yes') {
+                $premiumMember = new PremiumMember($fname, $lname, $age, $gender, $phone);
+                $f3->set('member', $premiumMember);
+            } else {
+                $member = new Member($fname, $lname, $age, $gender, $phone);
+                $f3->set('member', $member);
+            }
+
+            if (validatePersonalInfoForm() && !empty($premium)) {
                 // writes data to session variables
                 $_SESSION['fname'] = $fname;
                 $_SESSION['lname'] = $lname;
                 $_SESSION['age'] = $age;
                 $_SESSION['gender'] = $gender;
                 $_SESSION['phone'] = $phone;
+                $_SESSION['premium'] = $premium;
+
+                $_SESSION['member'] = $premiumMember;
+
+                // redirects to next form: Profile Form
+                $f3->reroute('/profile_form');
+            } else if (validatePersonalInfoForm()) {
+                // writes data to session variables
+                $_SESSION['fname'] = $fname;
+                $_SESSION['lname'] = $lname;
+                $_SESSION['age'] = $age;
+                $_SESSION['gender'] = $gender;
+                $_SESSION['phone'] = $phone;
+                $_SESSION['premium'] = $premium;
+
+                $_SESSION['member'] = $member;
 
                 // redirects to next form: Profile Form
                 $f3->reroute('/profile_form');
@@ -101,7 +129,22 @@
                 $_SESSION['seeking'] = $seeking;
                 $_SESSION['bio'] = $bio;
 
-                $f3->reroute('/interests_form');
+                $memberType = $_SESSION['member'];
+                if ($memberType instanceof PremiumMember) {
+                    $memberType->setEmail($email);
+                    $memberType->setState($state);
+                    $memberType->setSeeking($seeking);
+                    $memberType->setBio($bio);
+
+                    $f3->reroute('/interests_form');
+                } else {
+                    $memberType->setEmail($email);
+                    $memberType->setState($state);
+                    $memberType->setSeeking($seeking);
+                    $memberType->setBio($bio);
+
+                    $f3->reroute('/summary');
+                }
             }
         }
 
@@ -122,16 +165,21 @@
             $f3->set('outdoorInterests', $outdoorInterests);
 
             if (validateInterestsForm()) {
+                $premiumMember = $_SESSION['member'];
+
                 if (!empty($indoorInterests)) {
-                    $_SESSION['indoorInterests'] = implode(', ', $indoorInterests);
+                    //$_SESSION['indoorInterests'] = implode(', ', $indoorInterests);
+                    $premiumMember->setIndoorInterests($indoorInterests);
                 } else {
-                    $_SESSION['indoorInterests'] = "(No indoor interests selected)";
+                    //$_SESSION['indoorInterests'] = "(No indoor interests selected)";
+
                 }
 
                 if (!empty($outdoorInterests)) {
-                    $_SESSION['outdoorInterests'] = implode(', ', $outdoorInterests);
+                    //$_SESSION['outdoorInterests'] = implode(', ', $outdoorInterests);
+                    $premiumMember->setOutDoorInterests($outdoorInterests);
                 } else {
-                    $_SESSION['outdoorInterests'] = "(No outdoor interests selected)";
+                    //$_SESSION['outdoorInterests'] = "(No outdoor interests selected)";
                 }
 
                 $f3->reroute('/summary');
@@ -157,8 +205,10 @@
         */
 
         // note: hive variables CAN'T have "-"
-        $f3->set('indoor', $_POST['indoor-interests']);
-        $f3->set('outdoor', $_POST['outdoor-interests']);
+        //$f3->set('indoor', $_POST['indoor-interests']);
+        //$f3->set('outdoor', $_POST['outdoor-interests']);
+
+
 
         $view = new Template();
         echo $view->render('views/summary.html');
