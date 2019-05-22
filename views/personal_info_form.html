@@ -11,7 +11,7 @@
     </head>
 
     <body>
-        <h1>Personal Information</h1>
+        <h1>Personal Information!</h1>
         <p>Note: All information entered is protected by our privacy policy. Profile
             information can only be viewed by others with your permission.</p>
 
@@ -60,7 +60,11 @@
             </check><br>
 
             <label>Premium Membership
-                <input type="checkbox" name="premium" value="premium">Sign me up for a Premium Account!
+                <input type="checkbox" name="premium" value="yes"
+                    <check if="{{ @premium == 'yes' }}">
+                        checked = "checked"
+                    </check>
+                >Sign me up for a Premium Account!
             </label><br>
 
             <input type="submit" value="Next">
