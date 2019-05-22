@@ -10,9 +10,7 @@
 
         <!-- user info goes here... -->
 
-
-        <a href="">Contact Me!</a><br><br>
-
+        <!--
         first name: {{ $_SESSION['fname'] }} <br>
         last name: {{ $_SESSION['lname'] }} <br>
         age: {{ $_SESSION['age'] }} <br>
@@ -21,11 +19,22 @@
 
         email: {{ $_SESSION['email'] }} <br>
         state: {{ $_SESSION['state'] }} <br>
-        seeking: {{ $_SESSION['seekingChoice'] }} <br>
+        seeking: {{ $_SESSION['seeking'] }} <br>
         bio: {{ $_SESSION['bio'] }} <br><br>
+        -->
 
+        <Strong>Name:</Strong> {{ $_SESSION['member']->getFirstName() }} {{ $_SESSION['member']->getLastName() }} <br>
+        <Strong>Gender:</Strong> {{ $_SESSION['member']->getGender() }} <br>
+        <Strong>Age:</Strong> {{ $_SESSION['member']->getAge() }} <br>
+        <Strong>Phone:</Strong> {{ $_SESSION['member']->getPhone() }} <br>
+        <Strong>Email:</Strong> {{ $_SESSION['member']->getEmail() }} <br>
+        <Strong>State:</Strong> {{ $_SESSION['member']->getState() }} <br>
+        <Strong>Seeking:</Strong> {{ $_SESSION['member']->getSeeking() }} <br>
+
+        <!--
         indoor interests: {{ $_SESSION['indoorInterests'] }} <br>
         outdoor interests: {{ $_SESSION['outdoorInterests'] }} <br>
+        -->
 
         <!--
         all interests:
@@ -36,5 +45,21 @@
             {{ @each }}
         </repeat>
         -->
+
+        <!-- shows interests section only if it is a premium member -->
+        <check if="{{ get_class($_SESSION['member']) == 'PremiumMember' }}">
+            <Strong>Interests:</Strong>
+            <repeat group="{{ $_SESSION['member']->getInDoorInterests() }}" value="{{ @indoor }}">
+                {{ @indoor }}
+            </repeat><br>
+
+            <repeat group="{{ $_SESSION['member']->getOutDoorInterests() }}" value="{{ @outdoor }}">
+                {{ @outdoor }}
+            </repeat><br>
+        </check>
+
+        <Strong>Bio:</Strong> {{ $_SESSION['member']->getBio() }} <br>
+
+        <a href="">Contact Me!</a><br><br>
     </body>
 </html>
