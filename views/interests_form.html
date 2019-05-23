@@ -55,16 +55,16 @@
         </form><br>
 
         <!-- for checking purpose -->
-        first name: {{ $_SESSION['fname'] }} <br>
-        last name: {{ $_SESSION['lname'] }} <br>
-        age: {{ $_SESSION['age'] }} <br>
-        gender: {{ $_SESSION['gender'] }} <br>
-        phone: {{ $_SESSION['phone'] }} <br><br>
+        first name: {{ $_SESSION['membership']->getFirstName() }} <br>
+        last name: {{ $_SESSION['membership']->getLastName() }} <br>
+        age: {{ $_SESSION['membership']->getAge() }} <br>
+        gender: {{ $_SESSION['membership']->getGender() }} <br>
+        phone: {{ $_SESSION['membership']->getPhone() }} <br><br>
 
-        email: {{ $_SESSION['email'] }} <br>
-        state: {{ $_SESSION['state'] }} <br>
-        seeking: {{ $_SESSION['seeking'] }} <br>
-        bio: {{ $_SESSION['bio'] }} <br>
+        email: {{ $_SESSION['membership']->getEmail() }} <br>
+        state: {{ $_SESSION['membership']->getState() }} <br>
+        seeking: {{ $_SESSION['membership']->getSeeking() }} <br>
+        bio: {{ $_SESSION['membership']->getBio() }} <br>
     </body>
 </html>
 
