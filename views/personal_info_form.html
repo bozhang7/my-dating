@@ -42,7 +42,7 @@
 
             <!-- optional -->
             Gender
-            <repeat group="{{ @genders }}" value="{{ @option }}">
+            <repeat group="{{ @genderOptions }}" value="{{ @option }}">
                 <label><input type="radio" name="gender" value="{{ @option }}"
                     <check if="{{ @option == @gender }}">
                         checked = "checked"
