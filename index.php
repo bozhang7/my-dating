@@ -27,8 +27,15 @@
 
     // defines "Personal Information" route
     $f3->route('GET|POST /personal_info_form', function($f3) {
+
+// remove all session variables
+//session_unset();
+
+// destroy the session
+//session_destroy();
+
         // defines an array of gender with available options
-        $f3->set('genders', array('Male', 'Female'));
+        $f3->set('genderOptions', array('Male', 'Female'));
 
         // if the form has been submitted (via POST), validates it
         if (!empty($_POST)) {
@@ -36,9 +43,17 @@
             $fname = $_POST['fname'];
             $lname = $_POST['lname'];
             $age = $_POST['age'];
-            $gender = $_POST['gender'];
+            if (!empty($_POST['gender'])) {
+                $gender = $_POST['gender'];
+            } else {
+                $gender = "(Not specified)";
+            }
             $phone = $_POST['phone'];
-            $premium = $_POST['premium'];
+            if (!empty($_POST['premium'])) {
+                $premium = $_POST['premium'];
+            } else {
+                $premium = "No";
+            }
 
             echo "fist name: $fname<br>";
             echo "last name: $lname<br>";
@@ -55,6 +70,7 @@
             $f3->set('phone', $phone);
             $f3->set('premium', $premium);
 
+            /*
             // creates the appropriate class object
             if ($premium == 'yes') {
                 $premiumMember = new PremiumMember($fname, $lname, $age, $gender, $phone);
@@ -63,8 +79,19 @@
                 $member = new Member($fname, $lname, $age, $gender, $phone);
                 $f3->set('member', $member);
             }
+            */
 
-            if (validatePersonalInfoForm() && !empty($premium)) {
+            if (validatePersonalInfoForm()) {
+                if ($premium == 'yes') {
+                    $premiumMember = new PremiumMember($fname, $lname, $age, $gender, $phone);
+                    $f3->set('membership', $premiumMember);
+                    $_SESSION['membership'] = $premiumMember;
+                } else {
+                    $regularMember = new Member($fname, $lname, $age, $gender, $phone);
+                    $f3->set('membership', $regularMember);
+                    $_SESSION['membership'] = $regularMember;
+                }
+                /*
                 // writes data to session variables
                 $_SESSION['fname'] = $fname;
                 $_SESSION['lname'] = $lname;
@@ -72,12 +99,14 @@
                 $_SESSION['gender'] = $gender;
                 $_SESSION['phone'] = $phone;
                 $_SESSION['premium'] = $premium;
+                */
 
-                $_SESSION['member'] = $premiumMember;
+                //$_SESSION['member'] = $premiumMember;
 
                 // redirects to next form: Profile Form
-                $f3->reroute('/profile_form');
-            } else if (validatePersonalInfoForm()) {
+                //$f3->reroute('/profile_form');
+            //} else if (validatePersonalInfoForm()) {
+                /*
                 // writes data to session variables
                 $_SESSION['fname'] = $fname;
                 $_SESSION['lname'] = $lname;
@@ -85,8 +114,9 @@
                 $_SESSION['gender'] = $gender;
                 $_SESSION['phone'] = $phone;
                 $_SESSION['premium'] = $premium;
+                */
 
-                $_SESSION['member'] = $member;
+                //$_SESSION['member'] = $regularMember;
 
                 // redirects to next form: Profile Form
                 $f3->reroute('/profile_form');
@@ -99,13 +129,13 @@
 
     // defines "Profile" route
     $f3->route('GET|POST /profile_form', function($f3) {
-        $f3->set('stateOptions', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
+        $f3->set('stateOptions', array('', 'Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
             'Idaho', 'Illinois', 'Indiana', 'Lowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi',
             'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'Ohio', 'Oklahoma', 'Oregon',
             'Pennsylvania', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia',
             'Wisconsin', 'Wyoming'));
 
-        $f3->set('seekingOptions', array('Male', 'Female'));
+        $f3->set('seekingGenderOptions', array('Male', 'Female'));
 
         if (!empty($_POST)) {
             $email = $_POST['email'];
@@ -118,31 +148,35 @@
             echo "seeking: $seeking<br>";
             echo "bio: $bio<br>";
 
+            // todo: necessary? what's the point?
             $f3->set('email', $email);
             $f3->set('state', $state);
             $f3->set('seeking', $seeking);
             $f3->set('bio', $bio);
 
             if (validateProfileForm()) {
+                /*
                 $_SESSION['email'] = $email;
                 $_SESSION['state'] = $state;
                 $_SESSION['seeking'] = $seeking;
                 $_SESSION['bio'] = $bio;
+                */
+                $memberShip = $_SESSION['membership'];
 
-                $memberType = $_SESSION['member'];
-                if ($memberType instanceof PremiumMember) {
-                    $memberType->setEmail($email);
-                    $memberType->setState($state);
-                    $memberType->setSeeking($seeking);
-                    $memberType->setBio($bio);
+                $memberShip->setEmail($email);
+                if (!empty($state)) {
+                    $memberShip->setState($state);
+                }
+                if (!empty($seeking)) {
+                    $memberShip->setSeeking($seeking);
+                }
+                if (!empty($bio)) {
+                    $memberShip->setBio($bio);
+                }
 
+                if ($memberShip instanceof PremiumMember) {
                     $f3->reroute('/interests_form');
                 } else {
-                    $memberType->setEmail($email);
-                    $memberType->setState($state);
-                    $memberType->setSeeking($seeking);
-                    $memberType->setBio($bio);
-
                     $f3->reroute('/summary');
                 }
             }
@@ -161,11 +195,11 @@
             $indoorInterests = $_POST['indoor'];
             $outdoorInterests = $_POST['outdoor'];
 
-            $f3->set('indoorInterests', $indoorInterests);
-            $f3->set('outdoorInterests', $outdoorInterests);
+            //$f3->set('indoorInterests', $indoorInterests);
+            //$f3->set('outdoorInterests', $outdoorInterests);
 
             if (validateInterestsForm()) {
-                $premiumMember = $_SESSION['member'];
+                $premiumMember = $_SESSION['membership'];
 
                 if (!empty($indoorInterests)) {
                     //$_SESSION['indoorInterests'] = implode(', ', $indoorInterests);
@@ -212,6 +246,23 @@
 
         $view = new Template();
         echo $view->render('views/summary.html');
+    });
+
+// remove all session variables
+//session_unset();
+
+// destroy the session
+//session_destroy();
+
+    $f3->route('GET /contact', function() {
+        // remove all session variables
+        session_unset();
+
+        // destroy the session
+        session_destroy();
+
+        $view = new Template();
+        echo $view->render('views/contact.html');
     });
 
     // runs f3
