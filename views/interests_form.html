@@ -11,18 +11,8 @@
         <form method="post" action="#">
             <!-- optional -->
             <p>In-door Interests<br>
-                <!--
-                <input type="checkbox" name="indoor-interests[]" value="tv">tv
-                <input type="checkbox" name="indoor-interests[]" value="movies">movies
-                <input type="checkbox" name="indoor-interests[]" value="cooking">cooking
-                <input type="checkbox" name="indoor-interests[]" value="board-games">board games
-                <input type="checkbox" name="indoor-interests[]" value="puzzles">puzzles
-                <input type="checkbox" name="indoor-interests[]" value="reading">reading
-                <input type="checkbox" name="indoor-interests[]" value="playing cards">playing cards
-                <input type="checkbox" name="indoor-interests[]" value="video games">video games
-                -->
                 <repeat group="{{ @indoorOptions }}" value="{{ @option }}">
-                    <label><input type="checkbox" name="indoor[]" value="{{ @option }}"
+                    <label><input type="checkbox" name="indoorInterests[]" value="{{ @option }}"
                         <check if="{{ !empty(@indoorInterests) && in_array(@option, @indoorInterests) }}">
                             checked = "checked"
                         </check>
@@ -33,16 +23,8 @@
 
             <!-- optional -->
             <p>Out-door Interests<br>
-                <!--
-                <input type="checkbox" name="outdoor-interests[]" value="hiking">hiking
-                <input type="checkbox" name="outdoor-interests[]" value="biking">biking
-                <input type="checkbox" name="outdoor-interests[]" value="swimming">swimming
-                <input type="checkbox" name="outdoor-interests[]" value="collecting">collecting
-                <input type="checkbox" name="outdoor-interests[]" value="walking">walking
-                <input type="checkbox" name="outdoor-interests[]" value="climbing">climbing
-                -->
                 <repeat group="{{ @outdoorOptions }}" value="{{ @option }}">
-                    <label><input type="checkbox" name="outdoor[]" value="{{ @option }}"
+                    <label><input type="checkbox" name="outdoorInterests[]" value="{{ @option }}"
                         <check if="{{ !empty(@outdoorInterests) && in_array(@option, @outdoorInterests) }}">
                             checked = "checked"
                         </check>
@@ -51,19 +33,35 @@
                 </repeat>
             </p>
 
-            <input type="submit" name="submit" value="Next">
+            <input type="submit" name="interests-submit" value="Next">
         </form><br>
 
         <!-- for checking purpose -->
-        first name: {{ $_SESSION['membership']->getFirstName() }} <br>
-        last name: {{ $_SESSION['membership']->getLastName() }} <br>
-        age: {{ $_SESSION['membership']->getAge() }} <br>
-        gender: {{ $_SESSION['membership']->getGender() }} <br>
+        first name: {{ $_SESSION['fname'] }} <br>
+        first name: {{ $_SESSION['membership']->getFirstName() }} <br><br>
+
+        last name: {{ $_SESSION['lname'] }} <br>
+        last name: {{ $_SESSION['membership']->getLastName() }} <br><br>
+
+        age: {{ $_SESSION['age'] }} <br>
+        age: {{ $_SESSION['membership']->getAge() }} <br><br>
+
+        gender: {{ $_SESSION['gender'] }} <br>
+        gender: {{ $_SESSION['membership']->getGender() }} <br><br>
+
+        phone: {{ $_SESSION['phone'] }} <br>
         phone: {{ $_SESSION['membership']->getPhone() }} <br><br>
 
-        email: {{ $_SESSION['membership']->getEmail() }} <br>
-        state: {{ $_SESSION['membership']->getState() }} <br>
-        seeking: {{ $_SESSION['membership']->getSeeking() }} <br>
+        email: {{ $_SESSION['email'] }} <br>
+        email: {{ $_SESSION['membership']->getEmail() }} <br><br>
+
+        state: {{ $_SESSION['state'] }} <br>
+        state: {{ $_SESSION['membership']->getState() }} <br><br>
+
+        seeking: {{ $_SESSION['seeking'] }} <br>
+        seeking: {{ $_SESSION['membership']->getSeeking() }} <br><br>
+
+        bio: {{ $_SESSION['bio'] }} <br>
         bio: {{ $_SESSION['membership']->getBio() }} <br>
     </body>
 </html>
