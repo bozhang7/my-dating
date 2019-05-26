@@ -6,19 +6,19 @@
         // checks first name
         if (!validateName($f3->get('fname'))) {
             $isValid = false;
-            $f3->set("errors['fname']", "Please re-enter first name");
+            $f3->set("errors['fname']", "Required field, please re-enter first name with letters only");
         }
 
         // checks last name
         if (!validateName($f3->get('lname'))) {
             $isValid = false;
-            $f3->set("errors['lname']", "Please re-enter last name");
+            $f3->set("errors['lname']", "Required field, please re-enter last name with letters only");
         }
 
         // checks age
         if (!validateAge($f3->get('age'))) {
             $isValid = false;
-            $f3->set("errors['age']", "Please re-enter age");
+            $f3->set("errors['age']", "Required field, please re-enter age with a number from 18 to 118");
         }
 
         // todo: validate gender?
@@ -26,7 +26,7 @@
         // checks phone number
         if (!validatePhone($f3->get('phone'))) {
             $isValid = false;
-            $f3->set("errors['phone']", "Please re-enter phone");
+            $f3->set("errors['phone']", "Required field, please re-enter phone number with dash");
         }
 
         return $isValid;
