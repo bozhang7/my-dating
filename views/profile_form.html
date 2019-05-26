@@ -24,10 +24,7 @@
 
             <!-- optional -->
             <label>State
-
-                <!-- <input type="text" name="state" value="{{ @state }}"> -->
                 <select name="state">
-
                     <repeat group="{{ @stateOptions }}" value="{{ @option }}">
                         <option value="{{ @option }}"
                             <check if="{{ @option == @state }}">
@@ -57,16 +54,44 @@
                 <textarea name="bio">{{ @bio }}</textarea><br>
             </label>
 
-            <input type="submit" value="Next">
+            <input type="submit" name="profile-submit" value="Next">
         </form><br>
 
-        <!-- for checking purpose -->
-        first name: {{ $_SESSION['membership']->getFirstName() }} <br>
-        last name: {{ $_SESSION['membership']->getLastName() }} <br>
-        age: {{ $_SESSION['membership']->getAge() }} <br>
-        gender: {{ $_SESSION['membership']->getGender() }} <br>
-        phone: {{ $_SESSION['membership']->getPhone() }} <br>
-        premium: {{ $_SESSION['membership'] instanceof PremiumMember }} <br>
+        <!-- info from the previous page -->
+        first name(hive): {{ @fname }} <br>
+        first name(variable): {{ $_SESSION['fname'] }} <br>
+        first name(object): {{ $_SESSION['membership']->getFirstName() }} <br><br>
 
+        last name(hive): {{ @lname }} <br>
+        last name(variable): {{ $_SESSION['lname'] }} <br>
+        last name(object): {{ $_SESSION['membership']->getLastName() }} <br><br>
+
+        age(hive): {{ @age }} <br>
+        age(variable): {{ $_SESSION['age'] }} <br>
+        age(object): {{ $_SESSION['membership']->getAge() }} <br><br>
+
+        gender(hive): {{ @gender }} <br>
+        gender(variable): {{ $_SESSION['gender'] }} <br>
+        gender(object): {{ $_SESSION['membership']->getGender() }} <br><br>
+
+        phone(hive): {{ @phone }} <br>
+        phone(variable): {{ $_SESSION['phone'] }} <br>
+        phone(object): {{ $_SESSION['membership']->getPhone() }} <br><br>
+
+        premium(hive):
+        <check if="{{ @premium == 'yes' }}">
+            <true>yes</true>
+            <false>no</false>
+        </check><br>
+        premium(variable):
+        <check if="{{ $_SESSION['premium'] == 'yes' }}">
+            <true>yes</true>
+            <false>no</false>
+        </check><br>
+        premium(object):
+        <check if="{{ $_SESSION['membership'] instanceof PremiumMember }}">
+            <true>yes</true>
+            <false>no</false>
+        </check><br>
     </body>
 </html>
