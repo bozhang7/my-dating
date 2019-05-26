@@ -1,10 +1,10 @@
 <?php
     class PremiumMember extends Member
     {
-        private $_inDoorInterests = array();
-        private $_outDoorInterests = array();
+        private $_inDoorInterests;
+        private $_outDoorInterests;
 
-        function __construct($fName, $lName, $age, $gender, $phone, $inDoorInterests="?", $outDoorInterests="?")
+        function __construct($fName, $lName, $age, $gender, $phone, $inDoorInterests=array(), $outDoorInterests=array())
         {
             // calls the parent class constructor
             parent::__construct($fName, $lName, $age, $gender, $phone);
