@@ -1,79 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Profile</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <title>Summary</title>
+</head>
+<body>
+    <h1>Summary</h1>
 
-    <body>
-        <h1>Summary</h1>
+    <Strong>Name:</Strong> {{ $_SESSION['membership']->getFirstName() }} {{ $_SESSION['membership']->getLastName() }} <br>
+    <Strong>Gender:</Strong> {{ $_SESSION['membership']->getGender() }} <br>
+    <Strong>Age:</Strong> {{ $_SESSION['membership']->getAge() }} <br>
+    <Strong>Phone:</Strong> {{ $_SESSION['membership']->getPhone() }} <br>
+    <Strong>Email:</Strong> {{ $_SESSION['membership']->getEmail() }} <br>
+    <Strong>State:</Strong> {{ $_SESSION['membership']->getState() }} <br>
+    <Strong>Seeking:</Strong> {{ $_SESSION['membership']->getSeeking() }} <br>
 
-        <!-- user info goes here... -->
-
-        <!--
-        first name: {{ $_SESSION['fname'] }} <br>
-        last name: {{ $_SESSION['lname'] }} <br>
-        age: {{ $_SESSION['age'] }} <br>
-        gender: {{ $_SESSION['gender'] }} <br>
-        phone: {{ $_SESSION['phone'] }} <br><br>
-
-        email: {{ $_SESSION['email'] }} <br>
-        state: {{ $_SESSION['state'] }} <br>
-        seeking: {{ $_SESSION['seeking'] }} <br>
-        bio: {{ $_SESSION['bio'] }} <br><br>
-        -->
-
-        <Strong>Name:</Strong> {{ $_SESSION['membership']->getFirstName() }} {{ $_SESSION['membership']->getLastName() }} <br>
-        <Strong>Gender:</Strong> {{ $_SESSION['membership']->getGender() }} <br>
-        <Strong>Age:</Strong> {{ $_SESSION['membership']->getAge() }} <br>
-        <Strong>Phone:</Strong> {{ $_SESSION['membership']->getPhone() }} <br>
-        <Strong>Email:</Strong> {{ $_SESSION['membership']->getEmail() }} <br>
-        <Strong>State:</Strong> {{ $_SESSION['membership']->getState() }} <br>
-        <Strong>Seeking:</Strong> {{ $_SESSION['membership']->getSeeking() }} <br>
-
-        <!--
-        indoor interests: {{ $_SESSION['indoorInterests'] }} <br>
-        outdoor interests: {{ $_SESSION['outdoorInterests'] }} <br>
-        -->
-
-        <!--
-        all interests:
-        <repeat group="{{ @indoor }}" value="{{ @each }}">
-            {{ @each }}
-        </repeat>
-        <repeat group="{{ @outdoor }}" value="{{ @each }}">
-            {{ @each }}
-        </repeat>
-        -->
-
-        <!-- shows interests section only if it is a premium member -->
-        <check if="{{ get_class($_SESSION['membership']) == 'PremiumMember' }}">
-            <Strong>Interests:</Strong>
-            <check if="{{ !empty($_SESSION['membership']->getInDoorInterests()) }}">
+    <check if="{{ $_SESSION['membership'] instanceof PremiumMember }}">
+        <true>
+            <check if="{{ !empty($_SESSION['membership']->getIndoorInterests()) || !empty($_SESSION['membership']->getOutdoorInterests()) }}">
                 <true>
-                    <repeat group="{{ $_SESSION['membership']->getInDoorInterests() }}" value="{{ @indoor }}">
-                        {{ @indoor }}
-                    </repeat><br>
+                    <Strong>Interests:</Strong>
+                    <check if="{{ !empty($_SESSION['membership']->getIndoorInterests()) }}">
+                        <true>
+                            <repeat group="$_SESSION['membership']->getIndoorInterests()" value="{{ @each }}">
+                                {{ @each }}
+                            </repeat>
+                        </true>
+                    </check>
+
+                    <check if="{{ !empty($_SESSION['membership']->getOutdoorInterests()) }}">
+                        <true>
+                            <repeat group="$_SESSION['membership']->getOutdoorInterests()" value="{{ @each }}">
+                                {{ @each }}
+                            </repeat>
+                        </true>
+                    </check>
                 </true>
+
                 <false>
-                    (No indoor interests selected)<br>
+                    <Strong>Interests:</Strong>(No interests selected)
                 </false>
             </check>
+        </true>
+    </check><br>
 
-            <check if="{{ !empty($_SESSION['membership']->getOutDoorInterests()) }}">
-                <true>
-                    <repeat group="{{ $_SESSION['membership']->getOutDoorInterests() }}" value="{{ @outdoor }}">
-                        {{ @outdoor }}
-                    </repeat><br>
-                </true>
-                <false>
-                    (No outdoor interests selected)<br>
-                </false>
-            </check>
-        </check>
+    <Strong>Bio:</Strong> {{ $_SESSION['membership']->getBio() }} <br>
 
-        <Strong>Bio:</Strong> {{ $_SESSION['membership']->getBio() }} <br>
-
-        <a href="contact">Contact Me!</a><br><br>
-    </body>
+    <a href="contact">Contact Me!</a><br><br>
+</body>
 </html>
