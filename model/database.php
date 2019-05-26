@@ -3,6 +3,8 @@
 require '/home/bzhanggr/config.php';
 
 /*
+drop table member, interest, member_interest;
+
 CREATE TABLE member (
     member_id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     fname VARCHAR(50),
@@ -20,8 +22,7 @@ CREATE TABLE member (
 CREATE TABLE interest (
     interest_id INT(3) NOT NULL AUTO_INCREMENT PRIMARY KEY,
     interest VARCHAR(30),
-    type VARCHAR(30),
-	UNIQUE (interest)
+    type VARCHAR(30)
 );
 
 CREATE TABLE member_interest (
@@ -158,6 +159,130 @@ class Database
                     }
                 }
             }
+        } else {
+            $interest = 'N/A';
+            $type = 'N/A';
+            $sql = "INSERT INTO interest (interest, type) VALUES (:interest, :type)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':interest', $interest, PDO::PARAM_STR);
+            $statement->bindParam(':type', $type, PDO::PARAM_STR);
+            $statement->execute();
+
+            $interestId = $this->_dbh->lastInsertId();
+
+            $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':memberId', $memberId, PDO::PARAM_STR);
+            $statement->bindParam(':interestId', $interestId, PDO::PARAM_STR);
+            $statement->execute();
+        }
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function insertMember2($member)
+    {
+        $fname = $member->getFirstName();
+        $lname = $member->getLastName();
+        $age = $member->getAge();
+        $gender = $member->getGender();
+        $phone = $member->getPhone();
+        $email = $member->getEmail();
+        $state = $member->getState();
+        $seeking = $member->getSeeking();
+        $bio = $member->getBio();
+        if ($member instanceof PremiumMember) {
+            $premium = 1;
+        } else {
+            $premium = 0;
+        }
+
+        // 1. defines the query - enters member info into table member
+        $sql = "INSERT INTO member (fname, lname, age, gender, phone, email, state, seeking, bio, premium) VALUES (:fname, :lname, :age, :gender, :phone, :email, :state, :seeking, :bio, :premium)";
+
+        // 2. prepares the statement
+        $statement = $this->_dbh->prepare($sql);
+
+        // 3. binds the parameters
+        $statement->bindParam(':fname', $fname, PDO::PARAM_STR);
+        $statement->bindParam(':lname', $lname, PDO::PARAM_STR);
+        $statement->bindParam(':age', $age, PDO::PARAM_STR);
+        $statement->bindParam(':gender', $gender, PDO::PARAM_STR);
+        $statement->bindParam(':phone', $phone, PDO::PARAM_STR);
+        $statement->bindParam(':email', $email, PDO::PARAM_STR);
+        $statement->bindParam(':state', $state, PDO::PARAM_STR);
+        $statement->bindParam(':seeking', $seeking, PDO::PARAM_STR);
+        $statement->bindParam(':bio', $bio, PDO::PARAM_STR);
+        $statement->bindParam(':premium', $premium, PDO::PARAM_STR);
+
+        // 4. executes the statement
+        $statement->execute();
+
+        // 5. gets the primary key of the last inserted member row
+        $memberId = $this->_dbh->lastInsertId();
+        echo "member id: $memberId<br>";
+
+        // for premium members, process interests if there is any
+        if ($premium == 1) {
+            $indoorInterests = $member->getInDoorInterests();
+            $outdoorInterests = $member->getOutDoorInterests();
+
+            // indoor interests
+            if (count($indoorInterests) != 0) {
+                // processes each indoor interest
+                foreach ($indoorInterests as $interest) {
+                    // adds the interest into database if new
+                    $sql = "INSERT INTO interest (interest, type) VALUES (:interest, 'indoor')";
+                    $statement = $this->_dbh->prepare($sql);
+                    $statement->bindParam(':interest', $interest, PDO::PARAM_STR);
+                    $statement->execute();
+
+                    $interestId = $this->_dbh->lastInsertId();
+                    echo "indoor interest id: $interestId<br>";
+
+                    // checks if the interest has been entered before
+                    $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
+                    $statement = $this->_dbh->prepare($sql);
+                    $statement->bindParam(':memberId', $memberId, PDO::PARAM_STR);
+                    $statement->bindParam(':interestId', $interestId, PDO::PARAM_STR);
+                    $statement->execute();
+                }
+            }
+
+            // outdoor interests
+            if (count($outdoorInterests) != 0) {
+                foreach ($outdoorInterests as $interest) {
+                    $sql = "INSERT IGNORE INTO interest (interest, type) VALUES (:interest, 'outdoor')";
+                    $statement = $this->_dbh->prepare($sql);
+                    $statement->bindParam(':interest', $interest, PDO::PARAM_STR);
+                    $statement->execute();
+
+                    $interestId = $this->_dbh->lastInsertId();
+                    echo "outdoor interest id: $interestId<br>";
+
+                    $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
+                    $statement = $this->_dbh->prepare($sql);
+                    $statement->bindParam(':memberId', $memberId, PDO::PARAM_STR);
+                    $statement->bindParam(':interestId', $interestId, PDO::PARAM_STR);
+                    $statement->execute();
+                }
+            }
+        } else {
+            $interest = 'N/A';
+            $type = 'N/A';
+            $sql = "INSERT INTO interest (interest, type) VALUES (:interest, :type)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':interest', $interest, PDO::PARAM_STR);
+            $statement->bindParam(':type', $type, PDO::PARAM_STR);
+            $statement->execute();
+
+            $interestId = $this->_dbh->lastInsertId();
+
+            $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
+            $statement = $this->_dbh->prepare($sql);
+            $statement->bindParam(':memberId', $memberId, PDO::PARAM_STR);
+            $statement->bindParam(':interestId', $interestId, PDO::PARAM_STR);
+            $statement->execute();
         }
     }
 
