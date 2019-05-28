@@ -92,7 +92,7 @@ class Database
 
         // 5. gets the primary key of the last inserted member row
         $memberId = $this->_dbh->lastInsertId();
-        echo "member id: $memberId<br>";
+        //echo "member id: $memberId<br>";
 
         // for premium members, process interests if there is any
         if ($premium == 1) {
@@ -110,7 +110,7 @@ class Database
                     $statement->execute();
 
                     $interestId = $this->_dbh->lastInsertId();
-                    echo "indoor interest id: $interestId<br>";
+                    //echo "indoor interest id: $interestId<br>";
 
                     // checks if the interest has been entered before
                     if ($interestId != 0) {
@@ -140,7 +140,7 @@ class Database
                     $statement->execute();
 
                     $interestId = $this->_dbh->lastInsertId();
-                    echo "outdoor interest id: $interestId<br>";
+                    //echo "outdoor interest id: $interestId<br>";
 
                     if ($interestId != 0) {
                         $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
@@ -220,7 +220,7 @@ class Database
 
         // 5. gets the primary key of the last inserted member row
         $memberId = $this->_dbh->lastInsertId();
-        echo "member id: $memberId<br>";
+        //echo "member id: $memberId<br>";
 
         // for premium members, process interests if there is any
         if ($premium == 1) {
@@ -238,7 +238,7 @@ class Database
                     $statement->execute();
 
                     $interestId = $this->_dbh->lastInsertId();
-                    echo "indoor interest id: $interestId<br>";
+                    //echo "indoor interest id: $interestId<br>";
 
                     // checks if the interest has been entered before
                     $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
@@ -258,7 +258,7 @@ class Database
                     $statement->execute();
 
                     $interestId = $this->_dbh->lastInsertId();
-                    echo "outdoor interest id: $interestId<br>";
+                    //echo "outdoor interest id: $interestId<br>";
 
                     $sql = "INSERT INTO member_interest (member_id, interest_id) VALUES (:memberId, :interestId)";
                     $statement = $this->_dbh->prepare($sql);
