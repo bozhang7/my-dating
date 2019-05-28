@@ -15,6 +15,7 @@
 
     <table>
         <tr>
+            <!-- defines table headings -->
             <th>ID</th>
             <th>Name</th>
             <th>Age</th>
@@ -39,12 +40,18 @@
                 <td>{{ @each['seeking'] }}</td>
                 <td>
                     <check if="{{ @each['premium'] }} == 1">
-                        <true>Yes</true>
-                        <false>No</false>
+                        <true>
+                            <input type="checkbox" checked>
+                        </true>
+                        <false>
+                            <input type="checkbox">
+                        </false>
                     </check>
                 </td>
                 <td>
-                    {{ @each['interest'] }}
+                    <!-- {{ @each['interest'] }}
+
+                    -->
                 </td>
             </tr>
         </repeat>
