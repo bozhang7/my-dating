@@ -40,6 +40,8 @@
         $result = $db->getMembers();
         $f3->set('result', $result);
 
+        // do something about each member to get all the interests
+
         // displays a view
         $view = new Template();
         echo $view->render('views/admin.html');
